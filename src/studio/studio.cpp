@@ -12,6 +12,7 @@
 //
 
 #include "studio.h"
+#include <stdio.h>
 
 ASSERTNAME
 RTCLASS(STDIO)
@@ -58,6 +59,7 @@ ON_CID_GEN(cidSoundsEnabled, &STDIO::FCmdSoundsEnabled, pvNil)
 ON_CID_GEN(cidCreateTbox, &STDIO::FCmdCreateTbox, pvNil)
 ON_CID_GEN(cidActorEaselOpen, &STDIO::FCmdActorEaselOpen, pvNil)
 ON_CID_GEN(cidListenerEaselOpen, &STDIO::FCmdListenerEaselOpen, pvNil)
+ON_CID_GEN(cidKey, &STDIO::FCmdEscapeKey, pvNil)
 #ifdef DEBUG
 ON_CID_GEN(cidWriteBmps, &STDIO::FCmdWriteBmps, pvNil)
 #endif // DEBUG
@@ -2229,6 +2231,26 @@ bool STDIO::FShutdown(bool fClearCache)
         vptagm->ClearCache();
 
     return fRet;
+}
+
+/***************************************************************************
+    Escape Key
+***************************************************************************/
+bool STDIO::FCmdEscapeKey(PCMD pcmd)
+{
+    AssertThis(0);
+    AssertVarMem(pcmd);
+    const long ESC = 0x1B;
+    auto pcmd_key = (PCMD_KEY)pcmd;
+
+    if(pcmd_key->vk != ESC)
+        return fFalse;
+
+    printf("STDIO::FCmdEscapeKey\n");
+
+    vpcex->EnqueueCid(cidBrowserCancel, pvNil, pvNil, kidBrowserCancel, 0, 0, 0);
+
+    return fTrue;
 }
 
 /***************************************************************************
