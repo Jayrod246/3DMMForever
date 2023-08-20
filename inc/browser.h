@@ -197,6 +197,8 @@ class BRWD : public BRWD_PAR
     {
         _ithumOverride = -1;
         _kidThumOverride = -1;
+        if (!vpcex->FAddCmh(this, kcmhlBrowser))
+          Assert(fRet, "Warning: Failed to add browser to CEX...");
     }
     ~BRWD(void);
 
